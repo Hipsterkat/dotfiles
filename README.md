@@ -8,7 +8,6 @@
 ![NixOS Unstable](https://img.shields.io/badge/NixOS-unstable-blue?style=flat&logo=nixos&logoColor=white)
 </div>
 
-# Bash configuration
 ```
 # ~/.config/bash/bashrc
 # Bash-specific configuration
@@ -35,6 +34,7 @@ shopt -s checkwinsize
 # Bash-specific prompt
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 # Bash-specific aliases
+
 alias bashconfig='$EDITOR ~/.config/bash/bashrc'
 alias rebuild='sudo nixos-rebuild switch --flake ~/Documents/Dotfiles#legion'
 alias clean='nix-collect-garbage; nix-collect-garbage -d'
