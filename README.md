@@ -34,23 +34,14 @@ shopt -s checkwinsize
 # Bash-specific prompt
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 # Bash-specific aliases
-
 alias bashconfig='$EDITOR ~/.config/bash/bashrc'
-alias rebuild='sudo nixos-rebuild switch --flake ~/Documents/Dotfiles#legion'
+alias rebuild='sudo nixos-rebuild switch --flake ~/Documents/Dotfiles/hosts/legion/home-manager#legion'
 alias clean='nix-collect-garbage; nix-collect-garbage -d'
 alias config='code ~/Documents/Dotfiles/configuration.nix'
 
 alias merge='git pull origin main --allow-unrelated-histories && git push'
 alias push='git push -u origin main --force'
-```
+alias commit='git add .;git commit -m "Local changes";git push origin main --force`'
 
 ```
-~/Documents/Dotfiles/
-├── configuration.nix
-├── flake.lock
-├── flake.nix
-├── hardware-configuration.nix
-├── hipst.nix
-├── LICENSE
-└── README.md
-```
+
