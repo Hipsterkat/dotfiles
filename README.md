@@ -8,7 +8,41 @@
 ![NixOS Unstable](https://img.shields.io/badge/NixOS-unstable-blue?style=flat&logo=nixos&logoColor=white)
 </div>
 
+Bash configuration
+```
+# ~/.config/bash/bashrc
+# Bash-specific configuration
 
+# Starship configuration
+export STARSHIP_CONFIG=$HOME/.config/starship/starship.toml
+export STARSHIP_CACHE=~/.starship/cache
+eval "$(starship init bash)"
+
+eval "$(thefuck --alias)"
+
+# Source the central configuration
+if [ -f ~/.config/shell.env ]; then
+    source ~/.config/shell.env
+fi
+
+# Bash-specific settings
+export HISTCONTROL=ignoreboth
+export HISTSIZE=1000
+export HISTFILESIZE=2000
+shopt -s histappend
+shopt -s checkwinsize
+
+# Bash-specific prompt
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+# Bash-specific aliases
+alias bashconfig='$EDITOR ~/.config/bash/bashrc'
+alias rebuild='sudo nixos-rebuild switch --flake ~/Documents/Dotfiles#legion'
+alias clean='nix-collect-garbage; nix-collect-garbage -d'
+alias config='code ~/Documents/Dotfiles/configuration.nix'
+
+alias merge='git pull origin main --allow-unrelated-histories && git push'
+alias push='git push -u origin main --force'
+```
 
 ```
 ~/Documents/Dotfiles/
