@@ -8,13 +8,15 @@
 
 </div>
 
+
+
 ```
 ~/Documents/Dotfiles/
-
-configuration.nix
-flake.lock
-flake.nix
-hardware-configuration.nix
-hipst.nix
-LICENSE
-README.md
+├── configuration.nix
+├── flake.lock
+├── flake.nix
+├── hardware-configuration.nix
+├── hipst.nix
+├── LICENSE
+└── README.md
+```
