@@ -31,7 +31,7 @@
             };
 
             modules = [
-              ./configuration.nix # Main configuration
+              ./system/configuration.nix # Main configuration
 
               inputs.home-manager.nixosModules.home-manager
               {
@@ -41,7 +41,7 @@
                   inherit inputs;
                 };
                 home-manager.users = {
-                  hipst = import ./hipst.nix;
+                  hipst = import ./home-manager/hipst.nix;
                 };
               }
             ];
