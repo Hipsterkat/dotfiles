@@ -8,7 +8,7 @@
 ![NixOS Unstable](https://img.shields.io/badge/NixOS-unstable-blue?style=flat&logo=nixos&logoColor=white)
 </div>
 
-Bash configuration
+# Bash configuration
 ```
 # ~/.config/bash/bashrc
 # Bash-specific configuration
