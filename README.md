@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="[[https://sempreupdate.com.br/wp-content/uploads/2019/03/nixos.png](https://icon.icepanel.io/Technology/svg/NixOS.svg](https://github.com/Hipsterkat/dotfiles/blob/main/nixos.png))" width="180" />
+<img src="https://raw.githubusercontent.com/Hipsterkat/dotfiles/main/nixos.png" width="200" />
 
 <br/>
 
