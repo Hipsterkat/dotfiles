@@ -27,9 +27,7 @@
       capSysNice = true;
     };
   };
-
-  services.flatpak.enable = true;
-
+  
   environment.gnome.excludePackages = with pkgs; [
     orca
     evince

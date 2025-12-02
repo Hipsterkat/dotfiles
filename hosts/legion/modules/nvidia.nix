@@ -1,36 +1,49 @@
 { config, lib, pkgs, ... }:
 
 {
-hardware.nvidia-container-toolkit.enable = true;
-
-boot.blacklistedKernelModules = [ "nouveau" ];
-services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [ 
-      vaapiVdpau 
-      libvdpau-va-gl
-      intel-media-driver
-      # intel-vaapi-driver
-      nvidia-vaapi-driver 
-    ];
-  };
+  boot.blacklistedKernelModules = [ "nouveau" ];
 
   hardware.nvidia = {
+    open = lib.mkDefault true;
     modesetting.enable = true;
-    powerManagement.enable = false;
-    nvidiaPersistenced = true;
-
-    open = false;
-    nvidiaSettings = true;
+    powerManagement = {
+      enable = true;
+      finegrained = true;
+    };
     package = config.boot.kernelPackages.nvidiaPackages.latest;
+    nvidiaSettings = true;
+    nvidiaPersistenced = true;
     prime = {
-      # Drive all displays (including external) via NVIDIA to avoid sluggish hybrid/offload behaviour.
-      sync.enable = true;
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
   };
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      nvidia-vaapi-driver
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+
+  nixpkgs.config.nvidia.acceptLicense = true;
+
+  environment.variables = {
+    GBM_BACKEND = "nvidia-drm";
+    LIBVA_DRIVER_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia-container-toolkit.enable = true;
 }

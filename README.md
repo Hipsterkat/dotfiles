@@ -39,9 +39,8 @@ alias rebuild='sudo nixos-rebuild switch --flake ~/Documents/Dotfiles/hosts/legi
 alias clean='nix-collect-garbage; nix-collect-garbage -d'
 alias config='code ~/Documents/Dotfiles/configuration.nix'
 
-alias merge='git pull origin main --allow-unrelated-histories && git push'
-alias push='git push -u origin main --force'
-alias commit='git add .;git commit -m "Local changes";git push origin main --force`'
+
+alias commit='git add . & git commit -m "Add files from host" & git pull origin main --rebase & git push origin main'
 
 ```
 

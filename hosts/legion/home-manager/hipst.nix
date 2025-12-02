@@ -3,7 +3,7 @@
 {
   home.username = "hipst";
   home.homeDirectory = "/home/hipst";
-
+  
   home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
 

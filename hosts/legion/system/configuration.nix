@@ -3,7 +3,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # Other host modules are included from flake.nix to avoid duplicate imports here.
   ];
 
   boot = {
@@ -26,7 +25,7 @@
     settings.experimental-features = [ "nix-command" "flakes" ];
     gc = {
       automatic = true;
-      dates = "weekly";
+      dates = "daily";
       options = "--delete-older-than 1d";
     };
   };
@@ -53,7 +52,6 @@
       "libvirtd"
       "qemu-libvirtd"
       "kvm"
-      "i2c"
     ];
   };
 
@@ -75,8 +73,34 @@
 
   hardware = {
     enableRedistributableFirmware = true;
-    i2c.enable = true;
+    #i2c.enable = true;
     bluetooth.enable = true;
+    vfio = {
+      ids = [
+        "10de:28e0"
+        "10de:22be"
+      ];
+      bootEntry = {
+        enable = true;
+        name = "vfio";
+        configuration = [
+          {
+            disabledModules = [ ../modules/nvidia.nix ];
+            services.xserver.videoDrivers = [ "modesetting" ];
+            hardware.graphics = {
+              enable = true;
+              enable32Bit = true;
+              extraPackages = with pkgs; [
+                intel-media-driver
+                vaapiVdpau
+                libvdpau-va-gl
+              ];
+            };
+            boot.blacklistedKernelModules = [ "nouveau" ];
+          }
+        ];
+      };
+    };
   };
 
   services = {
@@ -139,13 +163,6 @@
     xwayland.enable = true;
   };
 
-  environment = {
-    sessionVariables = {
-      LIBVA_DRIVER_NAME = "iHD";
-      __GL_VRR_ALLOWED = "1";
-    };
-  };
-
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     noto-fonts-emoji
@@ -194,5 +211,5 @@
 
   security.rtkit.enable = true;
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
