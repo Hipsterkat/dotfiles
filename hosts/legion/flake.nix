@@ -10,42 +10,42 @@
     };
   };
 
-  outputs =
-    {
-      ...
-    }@inputs:
-    {
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
 
-      nixosConfigurations = {
-        legion =
-          let
-            system = "x86_64-linux";
-          in
-          # Set the default pkgs the system follows
-          inputs.nixpkgs.lib.nixosSystem {
-            inherit system;
+    nixosConfigurations = {
+      legion =
+        let
+          system = "x86_64-linux";
+        in
+        # Set the default pkgs the system follows
+        inputs.nixpkgs.lib.nixosSystem {
+          inherit system;
 
-            # This makes these args available in all other modules
-            specialArgs = {
-              inherit inputs;
-            };
-
-            modules = [
-              ./system/configuration.nix # Main configuration
-
-              inputs.home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.extraSpecialArgs = {
-                  inherit inputs;
-                };
-                home-manager.users = {
-                  hipst = import ./home-manager/hipst.nix;
-                };
-              }
-            ];
+          # This makes these args available in all other modules
+          specialArgs = {
+            inherit inputs;
           };
-      };
+
+          modules = [
+            ./system/configuration.nix
+            ./modules/nvidia.nix
+            ./modules/programs.nix
+            ./modules/lenovo.nix
+            ./modules/vfio.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+              };
+              home-manager.users = {
+                hipst = import ./home-manager/hipst.nix;
+              };
+            }
+          ];
+        };
     };
+  };
 }
