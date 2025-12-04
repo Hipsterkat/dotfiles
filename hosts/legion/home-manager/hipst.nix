@@ -3,7 +3,7 @@
 {
   home.username = "hipst";
   home.homeDirectory = "/home/hipst";
-  
+
   home.stateVersion = "25.05";
   home.enableNixpkgsReleaseCheck = false;
 
@@ -16,20 +16,20 @@
   };
 
   programs.neovim = {
-  enable = true;
+    enable = true;
 
-  extraPackages = with pkgs; [
-    ripgrep
-    fd
-    gcc
-  ];
-};
+    extraPackages = with pkgs; [
+      ripgrep
+      fd
+      gcc
+    ];
+  };
 
   # Example: user packages
   home.packages = with pkgs; [
     protonplus
     protontricks
-
+    pkgs.onlyoffice-bin
   ];
 
   programs = {
@@ -54,4 +54,32 @@
     };
   };
 
+  gtk = {
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = {
+      name = "adwaita";
+    };
+    style = {
+      name = "adwaita-dark";
+      package = pkgs.adwaita-qt;
+    };
+  };
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "adw-gtk3-dark";
+      icon-theme = "Papirus-Dark";
+    };
+  };
+
+  
 }

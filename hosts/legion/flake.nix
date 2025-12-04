@@ -8,6 +8,11 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    l5p-keyboard-rgb = {
+      url = "github:4JX/L5P-Keyboard-RGB/4f2d1e74f5f7e90da82dab1d01d95a4e517c6b32";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }: {

@@ -11,6 +11,11 @@
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxPackages_zen;
+    kernelModules = [
+      "i2c-dev"
+      "i2c-i801"
+      "i2c-piix4"
+    ];   
   };
 
   swapDevices = [
@@ -71,9 +76,11 @@
     };
   };
 
+  lenovo.enable = true;
+
   hardware = {
     enableRedistributableFirmware = true;
-    #i2c.enable = true;
+    i2c.enable = true;
     bluetooth.enable = true;
     vfio = {
       ids = [
@@ -96,7 +103,7 @@
                 libvdpau-va-gl
               ];
             };
-            boot.blacklistedKernelModules = [ "nouveau" ];
+            # boot.blacklistedKernelModules = [ "nouveau" ];
           }
         ];
       };
@@ -150,13 +157,6 @@
         cups-browsed
       ];
     };
-
-    hardware.openrgb = {
-      enable = true;
-      package = pkgs.openrgb;
-      motherboard = "intel";
-      server.port = 6742;
-    };
   };
 
   programs = {
@@ -171,7 +171,20 @@
     noto-fonts-cjk-sans
     font-awesome
     material-icons
+    papirus-icon-theme
   ];
+  
+  programs.dconf.profiles.user.databases = [{
+    settings."org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      icon-theme = "Papirus-Dark";
+    };
+  }];
+
+  environment.sessionVariables = {
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_STYLE_OVERRIDE = "kvantum";
+  };
 
   xdg.portal = {
     enable = true;
@@ -210,6 +223,7 @@
   };
 
   security.rtkit.enable = true;
+
 
   system.stateVersion = "25.11";
 }
