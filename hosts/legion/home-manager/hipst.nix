@@ -30,6 +30,7 @@
     protonplus
     protontricks
     pkgs.onlyoffice-bin
+    copyq
   ];
 
   programs = {

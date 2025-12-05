@@ -10,12 +10,13 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.linuxPackages_zen;
+    kernelPackages = pkgs.linuxPackages_6_6;
     kernelModules = [
       "i2c-dev"
       "i2c-i801"
       "i2c-piix4"
-    ];   
+    ];
+    resumeDevice = "/dev/disk/by-uuid/8596afb9-4e42-46ac-bfdb-4bd9aad8060f";
   };
 
   swapDevices = [
@@ -34,6 +35,7 @@
       options = "--delete-older-than 1d";
     };
   };
+
 
   networking = {
     hostName = "legion";
@@ -77,9 +79,14 @@
   };
 
   lenovo.enable = true;
-
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+  };
+  
   hardware = {
     enableRedistributableFirmware = true;
+    sensor.iio.enable = true;
     i2c.enable = true;
     bluetooth.enable = true;
     vfio = {
@@ -147,6 +154,11 @@
     };
     fwupd.enable = true;
     flatpak.enable = true;
+    logind = {
+      lidSwitch = "suspend-then-hibernate";
+      lidSwitchExternalPower = "suspend-then-hibernate";
+      lidSwitchDocked = "ignore";
+    };
 
     printing = {
       enable = true;
@@ -158,6 +170,8 @@
       ];
     };
   };
+
+  systemd.sleep.extraConfig = "HibernateDelaySec=1h";
 
   programs = {
     xwayland.enable = true;
@@ -195,13 +209,13 @@
   };
 
   virtualisation = {
-    # virtualbox.host.enable = true;
-    # virtualbox.host.enableExtensionPack = true;
+    virtualbox.host.enable = true;
+    virtualbox.host.enableExtensionPack = true;
 
-    # virtualbox.guest = {
-    #   enable = true;
-    #   dragAndDrop = true;
-    # };
+    virtualbox.guest = {
+      enable = true;
+      dragAndDrop = true;
+    };
 
     waydroid.enable = true;
     docker.enable = true;

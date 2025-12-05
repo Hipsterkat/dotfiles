@@ -2,21 +2,33 @@
 
 {
   boot.blacklistedKernelModules = [ "nouveau" ];
-
+  boot.kernelModules = [ 
+    "nvidia" 
+    "nvidia_modeset" 
+    "nvidia_uvm" 
+    "nvidia_drm"
+    ];
+    
+    boot.kernelParams = [
+    "pcie_aspm=off"
+    "nvidia-drm.modeset=1"
+    ];
+  
   hardware.nvidia = {
-    open = lib.mkDefault true;
+    open = lib.mkDefault false;
     modesetting.enable = true;
     powerManagement = {
-      enable = true;
-      finegrained = true;
+      enable = lib.mkForce false;
+      finegrained = lib.mkForce false;
     };
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
     nvidiaSettings = true;
     nvidiaPersistenced = true;
     prime = {
+      sync.enable = true;
       offload = {
-        enable = true;
-        enableOffloadCmd = true;
+        enable = lib.mkForce false;
+        enableOffloadCmd = lib.mkForce false;
       };
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
@@ -32,6 +44,10 @@
       vaapiVdpau
       libvdpau-va-gl
     ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
   };
 
   nixpkgs.config.nvidia.acceptLicense = true;
@@ -44,6 +60,6 @@
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
-
+  
   hardware.nvidia-container-toolkit.enable = true;
 }
