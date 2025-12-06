@@ -29,6 +29,8 @@ in {
       SUBSYSTEM=="usb", ATTR{idVendor}=="048d", ATTR{idProduct}=="c965", MODE="0666"
       SUBSYSTEM=="usb", ATTR{idVendor}=="048d", ATTR{idProduct}=="c963", MODE="0666"
       SUBSYSTEM=="usb", ATTR{idVendor}=="048d", ATTR{idProduct}=="c955", MODE="0666"
+      # Keep the AQIRYS Phoenix mouse awake to avoid autosuspend disconnects.
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="04d9", ATTR{idProduct}=="a09f", TEST=="power/control", ATTR{power/control}="on"
     '';
 
     systemd.services.lenovo-conservation-mode = {

@@ -1,49 +1,46 @@
 { config, lib, pkgs, ... }:
 
 {
-  boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.kernelModules = [ 
-    "nvidia" 
-    "nvidia_modeset" 
-    "nvidia_uvm" 
-    "nvidia_drm"
-    ];
-    
-    boot.kernelParams = [
+  boot.kernelParams = [
     "pcie_aspm=off"
     "nvidia-drm.modeset=1"
-    ];
-  
+    "nvidia-drm.fbdev=1"
+    "usbcore.autosuspend=-1"
+  ];
+
   hardware.nvidia = {
-    open = lib.mkDefault false;
+    open = false;
     modesetting.enable = true;
-    powerManagement = {
-      enable = lib.mkForce false;
-      finegrained = lib.mkForce false;
-    };
-    package = config.boot.kernelPackages.nvidiaPackages.production;
-    nvidiaSettings = true;
+
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
     nvidiaPersistenced = true;
+
+    package = config.boot.kernelPackages.nvidiaPackages.production;
+
     prime = {
       sync.enable = true;
-      offload = {
-        enable = lib.mkForce false;
-        enableOffloadCmd = lib.mkForce false;
-      };
+      offload.enable = false;
+
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
   };
 
+  services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+
     extraPackages = with pkgs; [
       intel-media-driver
       nvidia-vaapi-driver
       vaapiVdpau
       libvdpau-va-gl
     ];
+
     extraPackages32 = with pkgs.pkgsi686Linux; [
       vaapiVdpau
       libvdpau-va-gl
@@ -59,7 +56,11 @@
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
-  
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", TEST=="power/control", ATTR{power/control}="on"
+  '';
+
+  boot.blacklistedKernelModules = [ "nouveau" ];
+
   hardware.nvidia-container-toolkit.enable = true;
 }

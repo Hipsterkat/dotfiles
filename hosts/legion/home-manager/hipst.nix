@@ -31,6 +31,9 @@
     protontricks
     pkgs.onlyoffice-bin
     copyq
+    mupdf
+    qimgv
+    
   ];
 
   programs = {

@@ -109,6 +109,9 @@
     gnome-shell-extensions
     cosmic-session
     papirus-icon-theme
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.just-perfection
+    gnomeExtensions.arc-menu
 
     # Utilities
     git

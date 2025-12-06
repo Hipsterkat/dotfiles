@@ -10,12 +10,9 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.linuxPackages_6_6;
-    kernelModules = [
-      "i2c-dev"
-      "i2c-i801"
-      "i2c-piix4"
-    ];
+    kernelPackages = pkgs.linuxPackages_lqx;
+    # kernelModules = []; 
+
     resumeDevice = "/dev/disk/by-uuid/8596afb9-4e42-46ac-bfdb-4bd9aad8060f";
   };
 
@@ -89,6 +86,7 @@
     sensor.iio.enable = true;
     i2c.enable = true;
     bluetooth.enable = true;
+
     vfio = {
       ids = [
         "10de:28e0"
@@ -125,10 +123,11 @@
 
       displayManager.gdm = {
         enable = true;
-        wayland = true;
       };
 
-      desktopManager.gnome.enable = true;
+      desktopManager.gnome = {
+        enable = true;
+      };
 
       xkb.layout = "us";
       xkb.variant = "";
@@ -158,6 +157,11 @@
       lidSwitch = "suspend-then-hibernate";
       lidSwitchExternalPower = "suspend-then-hibernate";
       lidSwitchDocked = "ignore";
+      extraConfig = ''
+        HandleLidSwitch=ignore
+        HandleLidSwitchExternalPower=ignore
+        IdleAction=ignore
+      '';
     };
 
     printing = {
@@ -170,8 +174,6 @@
       ];
     };
   };
-
-  systemd.sleep.extraConfig = "HibernateDelaySec=1h";
 
   programs = {
     xwayland.enable = true;
@@ -187,7 +189,7 @@
     material-icons
     papirus-icon-theme
   ];
-  
+
   programs.dconf.profiles.user.databases = [{
     settings."org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
@@ -202,20 +204,20 @@
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ 
-     pkgs.xdg-desktop-portal-gnome
-     pkgs.xdg-desktop-portal-gtk
-     ];
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gnome
+      pkgs.xdg-desktop-portal-gtk
+    ];
   };
 
   virtualisation = {
-    virtualbox.host.enable = true;
-    virtualbox.host.enableExtensionPack = true;
+    #virtualbox.host.enable = true;
+    #virtualbox.host.enableExtensionPack = true;
 
-    virtualbox.guest = {
-      enable = true;
-      dragAndDrop = true;
-    };
+    #virtualbox.guest = {
+    #  enable = true;
+    #  dragAndDrop = true;
+    #};
 
     waydroid.enable = true;
     docker.enable = true;
@@ -238,6 +240,7 @@
 
   security.rtkit.enable = true;
 
+  systemd.sleep.extraConfig = "HibernateDelaySec=1h";
 
   system.stateVersion = "25.11";
 }
