@@ -37,6 +37,7 @@
             ./modules/programs.nix
             ./modules/lenovo.nix
             ./modules/vfio.nix
+            ./modules/niri.nix
 
             home-manager.nixosModules.home-manager
             {

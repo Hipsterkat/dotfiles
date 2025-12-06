@@ -121,11 +121,7 @@
     xserver = {
       enable = true;
 
-      displayManager.gdm = {
-        enable = true;
-      };
-
-      desktopManager.gnome = {
+      displayManager.sddm = {
         enable = true;
       };
 
